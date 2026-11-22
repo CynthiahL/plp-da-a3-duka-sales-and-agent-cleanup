@@ -19,6 +19,11 @@ This repository contains two client analytics deliverables built for a Nairobi a
    * Open `duka_sales_exploration.ipynb` and run all cells to generate `outputs/premium_online_coast_capital.csv` and verify totals against `excel/duka_branch_summary.xlsx`.
    * Open `agent_cleanup.ipynb` and run all cells to execute `clean_agent_data()` and generate `outputs/agent_transactions_clean.csv`.
 
+** Collab Notebook
+To interact with the code, run the calculations, and view the generated Stall Performance Report, execute the notebook directly via Google Colab:
+
+[Open in Colab](https://colab.research.google.com/github/CynthiahL/plp-da-a3-duka-sales-and-agent-cleanup/blob/main/duka_sales_exploration.ipynb)
+
 ## Duka Electronics — Executive Summary
 * Duka Electronics generated a total half-year revenue of **KES 71,792,500** across **1,000 orders** between January 1 and June 29, 2026.
 * **Nairobi** led all branches in both revenue (**KES 26,106,100**, or 36.4% of total sales) and order volume (**376 orders**), followed by **Mombasa** (**KES 14,003,700** across 186 orders).
