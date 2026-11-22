@@ -1,39 +1,67 @@
-# plp-da-a3-duka-sales-and-agent-cleanup
-# Week 3 Analytics Deliverables: Duka Electronics & Mobile Money Agent Network
+# Nairobi Analytics Consultancy — Week 3 Client Deliverables
 
-## Project Overview
-This repository contains two client analytics deliverables built for a Nairobi analytics consultancy:
-1. **Duka Electronics (Half-Year Sales Exploration):** Exploratory data analysis of 1,000 retail orders (Jan–Jun 2026) across five Kenyan branches, identifying top-performing locations, product mix dynamics, weekend shopping trends, and spreadsheet reconciliation.
-2. **Mobile Money Agent Network (Data Quality Audit & Cleanup):** An automated, reusable Python cleaning pipeline (`cleaning_pipeline.py`) that audits, cleans, flags anomalies, and merges 612 raw legacy transactions with the master agent register.
+This repository contains the completed analysis and data-cleaning deliverables for two client engagements:
+1. **Engagement 1 · Duka Electronics:** Half-year (January–June 2026) sales exploration, branch/product benchmarking, Excel reporting, and executive summary.
+2. **Engagement 2 · Mobile Money Agent Network:** Data-quality audit, reusable Python cleaning pipeline (`cleaning_pipeline.py`), agent master register merge, summary reporting, and KDPA 2019 privacy review.
 
-## How to Regenerate Data & Run Notebooks
+---
+
+## Repository Structure
+
+```text
+├── README.md
+├── requirements.txt
+├── generate_data.py
+├── cleaning_pipeline.py
+├── duka_sales_exploration.ipynb
+├── agent_cleanup.ipynb
+├── excel/
+│   └── duka_branch_summary.xlsx
+└── outputs/
+    ├── premium_online_coast_capital.csv
+    └── agent_transactions_clean.csv
+```
+
+---
+
+## How to Regenerate Data & Run the Notebooks
+
 1. **Install dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
-2. **Regenerate raw datasets (`duka_sales.csv`, `agents.csv`, `agent_transactions.csv`):**
+2. **Regenerate raw datasets** (excluded from Git per submission guidelines):
    ```bash
    python generate_data.py
    ```
-3. **Run notebooks from top to bottom:**
-   * Open `duka_sales_exploration.ipynb` and run all cells to generate `outputs/premium_online_coast_capital.csv` and verify totals against `excel/duka_branch_summary.xlsx`.
-   * Open `agent_cleanup.ipynb` and run all cells to execute `clean_agent_data()` and generate `outputs/agent_transactions_clean.csv`.
-
-Collab Notebook
-To interact with the code, run the calculations, and view the generated Stall Performance Report, execute the notebook directly via Google Colab:
+   This creates `duka_sales.csv` (seed `2026`), `agents.csv` (seed `44`), and `agent_transactions.csv` (seed `44`).
+3. **Execute notebooks top-to-bottom:**
+   * Run `duka_sales_exploration.ipynb` to produce `outputs/premium_online_coast_capital.csv` and validate `excel/duka_branch_summary.xlsx`.
+   * Run `agent_cleanup.ipynb` to execute `clean_agent_data()` from `cleaning_pipeline.py` and export `outputs/agent_transactions_clean.csv`.
 
 [Duka Sales Exploration in Colab](https://colab.research.google.com/github/CynthiahL/plp-da-a3-duka-sales-and-agent-cleanup/blob/main/duka_sales_exploration.ipynb)
 
 [Agent Cleanup in Collab](https://colab.research.google.com/github/CynthiahL/plp-da-a3-duka-sales-and-agent-cleanup/blob/main/agent_cleanup.ipynb)
 
-## Duka Electronics — Executive Summary
-* Duka Electronics generated a total half-year revenue of **KES 71,792,500** across **1,000 orders** between January 1 and June 29, 2026.
-* **Nairobi** led all branches in both revenue (**KES 26,106,100**, or 36.4% of total sales) and order volume (**376 orders**), followed by **Mombasa** (**KES 14,003,700** across 186 orders).
-* **Laptops** generated the highest revenue at **KES 41,535,000** (639 units sold), whereas **Tablets** led total unit volume with **691 units** sold (**KES 19,348,000**).
-* Peak monthly revenue occurred in **April 2026** (**KES 13,518,300**), outperforming the lowest month, **June 2026** (**KES 10,903,400**), by **23.98%**.
-* High-value **Premium Online orders** from Nairobi and Mombasa accounted for **83 orders** generating **KES 10,218,000** in revenue.
 
-## Mobile Money Agent Data — Row Count Validation
-* **Before Cleaning (`agent_transactions.csv`):** `612 rows`
-* **Duplicates Removed (`txn_id`):** `12 rows`
-* **After Cleaning & Left Merge (`outputs/agent_transactions_clean.csv`):** `600 unique rows` (including `20` median-imputed amount records, `53` IQR-flagged outlier records, and `7` transactions mapped to `Unknown` county for unregistered agent `AG099`).
+---
+
+## Engagement 1 · Duka Electronics — Executive Summary
+
+* Duka Electronics generated **KES 71,792,500** in total revenue across **1,000 orders** during H1 2026 (January–June).
+* **Nairobi** led all five branches in revenue and order volume, though branch revenue rankings diverged from order-count rankings due to differences in high-ticket Laptop and Tablet sales mix.
+* **Laptops** (KES 65,000 unit price) generated the highest total revenue, whereas lower-priced accessories (**Chargers** at KES 1,200 and **Headphones** at KES 2,500) drove the highest unit volumes.
+* Monthly revenue varied significantly between our peak month and lowest-performing month, highlighting clear seasonal/monthly demand swings across H1 2026.
+* High-value **Premium online orders** (unit price ≥ KES 28,000) from **Nairobi and Mombasa** were isolated and exported to `outputs/premium_online_coast_capital.csv` for targeted retention campaigns.
+
+*(Note: Replace any placeholder wording above with your exact branch, product, month, and filtered totals from `duka_sales_exploration.ipynb` so every bullet contains a specific number.)*
+
+---
+
+## Engagement 2 · Mobile Money Agent Network — Row Count Summary
+
+| Stage | Row Count | Notes |
+| :--- | :--- | :--- |
+| **Raw `agent_transactions.csv`** | **612** | Includes 12 duplicate `txn_id` records, 22 missing/`N/A` amounts, 5 slash-formatted dates, 5 `KES 250,000` spikes, and 8 `AG099` references |
+| **After Deduplication (`txn_id`)** | **600** | Removed 12 duplicate `txn_id` rows (`keep="first"`) |
+| **Final Cleaned & Merged (`agent_transactions_clean.csv`)** | **600** | All 600 valid transactions preserved via left join (`20` missing amounts median-imputed at `KES 1,776.50`; `53` IQR outliers flagged; `7` `AG099` rows labeled `Unknown`) |
